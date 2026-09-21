@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKDSE S6 Mathematics: Linear Programming Master</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .canvas-container { position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 600px; margin: 0 auto; }
+        canvas { border-radius: 0.75rem; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        .tab-btn.active { border-bottom-color: #2563eb; color: #2563eb; background-color: #eff6ff; font-weight: 600; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .math-eq { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid font-mono">LP</i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight">HKDSE S6 Mathematics</h1>
+                    <p class="text-xs text-blue-400 font-medium">Compulsory Part: Linear Programming (線性規劃)</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <span class="px-3 py-1 bg-slate-800 text-slate-300 text-xs font-semibold rounded-full border border-slate-700">
+                    <i class="fa-solid fa-graduation-cap text-blue-400 mr-1"></i> HK Curriculum Aligned
+                </span>
+            </div>
+        </div>
+        <!-- Tabs Navigation -->
+        <div class="bg-slate-800 border-t border-slate-700/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <nav class="flex space-x-2 sm:space-x-8 overflow-x-auto custom-scrollbar text-sm text-slate-300" id="main-tabs">
+                    <button onclick="switchTab('formulation')" id="tab-formulation" class="tab-btn active py-3 px-4 border-b-2 border-transparent hover:text-white flex items-center space-x-2 whitespace-nowrap">
+                        <i class="fa-solid fa-pen-ruler"></i> <span>1. Formulation Builder</span>
+                    </button>
+                    <button onclick="switchTab('playground')" id="tab-playground" class="tab-btn py-3 px-4 border-b-2 border-transparent hover:text-white flex items-center space-x-2 whitespace-nowrap">
+                        <i class="fa-solid fa-chart-line"></i> <span>2. Interactive Graph Solver</span>
+                    </button>
+                    <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn py-3 px-4 border-b-2 border-transparent hover:text-white flex items-center space-x-2 whitespace-nowrap">
+                        <i class="fa-solid fa-clipboard-question"></i> <span>3. HKDSE Practice Quiz</span>
+                    </button>
+                    <button onclick="switchTab('concepts')" id="tab-concepts" class="tab-btn py-3 px-4 border-b-2 border-transparent hover:text-white flex items-center space-x-2 whitespace-nowrap">
+                        <i class="fa-solid fa-book-open"></i> <span>4. Key Concepts & Videos</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- SECTION 1: FORMULATION BUILDER -->
+        <section id="sec-formulation" class="space-y-6">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">Step-by-Step Learning</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Formulating Word Problems into Inequalities</h2>
+                        <p class="text-slate-600 text-sm mt-1">Learn how to read a typical HKDSE practical scenario and convert it into mathematical constraints.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="scenario-select" class="text-xs font-semibold text-slate-500">Preset Scenario:</label>
+                        <select id="scenario-select" onchange="loadFormulationScenario(this.value)" class="bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg p-2 font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="bakery">Bakery Production (Pineapple Buns & Egg Tarts)</option>
+                            <option value="factory">Toy Factory (Robots & Cars)</option>
+                            <option value="diet">Diet & Health Supplements (Pills A & B)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="formulation-scenario-box" class="bg-amber-50/80 border border-amber-200 rounded-xl p-5 mb-8 text-slate-800">
+                    <!-- Scenario text populated via JS -->
+                </div>
+
+                <!-- Guided Interactive Steps -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Step A -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex items-center space-x-2 text-blue-600 font-bold mb-3">
+                                <span class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">A</span>
+                                <h3>Decision Variables</h3>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-4">Identify the unknown quantities to be determined.</p>
+                            <div id="step-a-container" class="space-y-3"></div>
+                        </div>
+                        <div id="step-a-feedback" class="mt-4 text-xs font-semibold"></div>
+                    </div>
+
+                    <!-- Step B -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex items-center space-x-2 text-blue-600 font-bold mb-3">
+                                <span class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">B</span>
+                                <h3>Objective Function Z</h3>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-4">Construct $Z = px + qy$ for Maximizing Profit or Minimizing Cost.</p>
+                            <div id="step-b-container" class="space-y-3"></div>
+                        </div>
+                        <div id="step-b-feedback" class="mt-4 text-xs font-semibold"></div>
+                    </div>
+
+                    <!-- Step C -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex items-center space-x-2 text-blue-600 font-bold mb-3">
+                                <span class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">C</span>
+                                <h3>Resource Constraints</h3>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-4">Build inequalities $ax + by \le c$ or $\ge c$ and check non-negativity.</p>
+                            <div id="step-c-container" class="space-y-3"></div>
+                        </div>
+                        <div id="step-c-feedback" class="mt-4 text-xs font-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mt-8 pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <button onclick="checkFormulationAll()" class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-sm transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-circle-check"></i> <span>Verify My Formulation</span>
+                    </button>
+                    <button onclick="sendToPlayground()" class="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 shadow-sm transition flex items-center justify-center space-x-2">
+                        <span>Load Formulation into Graph Solver</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE GRAPH & PLAYGROUND -->
+        <section id="sec-playground" class="space-y-6 hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Controls Column (5 cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Constraints Control Panel -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-blue-600"></i> Constraints Control
+                            </h3>
+                            <button onclick="addConstraint()" class="text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold px-2.5 py-1.5 rounded-md border border-blue-200 transition">
+                                <i class="fa-solid fa-plus mr-1"></i> Add Line
+                            </button>
+                        </div>
+
+                        <!-- Non negativity badge -->
+                        <div class="bg-slate-100 p-2 rounded-lg text-xs font-mono text-slate-700 text-center mb-4 font-semibold border border-slate-200">
+                            Standard HKDSE Constraints: $x \ge 0, y \ge 0$ (Non-negativity)
+                        </div>
+
+                        <!-- Constraint List Container -->
+                        <div id="constraints-list" class="space-y-3 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+
+                        <!-- Objective Function Control -->
+                        <div class="mt-6 pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Objective Function $Z = px + qy$</h4>
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <label class="text-xs font-semibold text-slate-600 block mb-1">Target</label>
+                                    <select id="obj-type" onchange="updateGraph()" class="w-full bg-slate-50 border border-slate-300 text-xs font-bold rounded-lg p-2">
+                                        <option value="max">Maximize Z</option>
+                                        <option value="min">Minimize Z</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-semibold text-slate-600 block mb-1">Equation Format</label>
+                                    <div class="flex items-center text-xs font-mono bg-slate-50 p-2 border border-slate-300 rounded-lg">
+                                        <span>Z = </span>
+                                        <input type="number" id="obj-p" value="40" oninput="updateGraph()" class="w-10 text-center bg-white border border-slate-300 rounded mx-1">
+                                        <span>x + </span>
+                                        <input type="number" id="obj-q" value="30" oninput="updateGraph()" class="w-10 text-center bg-white border border-slate-300 rounded mx-1">
+                                        <span>y</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Iso-Profit Line Sweeper Slider -->
+                            <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg space-y-2">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="font-bold text-blue-900 flex items-center gap-1">
+                                        <i class="fa-solid fa-arrows-left-right text-blue-600"></i> Iso-Profit / Iso-Cost Search Line ($Z$)
+                                    </span>
+                                    <span id="obj-z-display" class="font-mono font-bold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-200">Z = 0</span>
+                                </div>
+                                <input type="range" id="iso-z-slider" min="0" max="2000" step="1" value="0" oninput="onIsoSliderChange(this.value)" class="w-full accent-blue-600">
+                                <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                    <span>Min Z</span>
+                                    <span>Sweep across Feasible Region</span>
+                                    <span>Max Z</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Point Tester -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-crosshairs text-emerald-600"></i> Interactive Point Tester
+                        </h3>
+                        <p class="text-xs text-slate-600 mb-3">Click anywhere on the graph canvas OR enter coordinates below to test if a point is feasible:</p>
+                        <div class="flex items-center space-x-2 mb-3">
+                            <div class="flex-1 flex items-center text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg p-1.5">
+                                <span class="text-slate-500 mr-2">x:</span>
+                                <input type="number" id="test-x" value="10" class="w-full bg-white border border-slate-200 rounded px-2 py-1">
+                            </div>
+                            <div class="flex-1 flex items-center text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg p-1.5">
+                                <span class="text-slate-500 mr-2">y:</span>
+                                <input type="number" id="test-y" value="10" class="w-full bg-white border border-slate-200 rounded px-2 py-1">
+                            </div>
+                            <button onclick="testCustomPoint()" class="px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-slate-700">
+                                Test Point
+                            </button>
+                        </div>
+                        <div id="point-test-result" class="text-xs p-2.5 rounded-lg bg-slate-50 border border-slate-200 font-mono">
+                            Result: Ready to test...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Canvas & Vertex Evaluation Column (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Graph Canvas Box -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex flex-col items-center">
+                        <div class="w-full flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-area text-purple-600"></i> Coordinate Plane & Feasible Region
+                            </h3>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-3 h-3 bg-emerald-500/30 border border-emerald-600 rounded-sm inline-block"></span> Feasible Region</span>
+                            </div>
+                        </div>
+
+                        <!-- Canvas container -->
+                        <div class="canvas-container w-full">
+                            <canvas id="lpCanvas" width="600" height="600" class="w-full h-full cursor-crosshair"></canvas>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-2 text-center"><i class="fa-solid fa-info-circle"></i> Hover or click on the graph to inspect coordinates and evaluate $Z$.</p>
+                    </div>
+
+                    <!-- Vertices / Corner Point Evaluation Table -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+                        <div class="flex justify-between items-center mb-3">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-table-list text-amber-600"></i> Corner Point Method Table (頂點法)
+                                </h3>
+                                <p class="text-xs text-slate-500">Evaluates $Z = px + qy$ at every vertex (corner point) of the feasible polygon.</p>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left text-slate-700 border-collapse">
+                                <thead class="bg-slate-100 font-semibold text-slate-800 uppercase tracking-wider">
+                                    <tr>
+                                        <th class="p-2.5 border-b border-slate-200">Vertex Label</th>
+                                        <th class="p-2.5 border-b border-slate-200">Coordinates $(x, y)$</th>
+                                        <th class="p-2.5 border-b border-slate-200">Value of $Z = px + qy$</th>
+                                        <th class="p-2.5 border-b border-slate-200">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vertex-table-body" class="divide-y divide-slate-100 font-mono">
+                                    <!-- Populated dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Summary Banner -->
+                        <div id="optimal-solution-banner" class="mt-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center justify-between">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: HKDSE PRACTICE & QUIZ -->
+        <section id="sec-practice" class="space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Exam Prep Mode</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">HKDSE Style Exam Practice</h2>
+                        <p class="text-slate-600 text-sm mt-1">Test your skill with HKDSE-style long questions and step-by-step verification.</p>
+                    </div>
+                    <button onclick="generateNewQuiz()" class="px-4 py-2 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrows-rotate"></i> Load Next Question
+                    </button>
+                </div>
+
+                <!-- Quiz Card -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 space-y-6">
+                        <div id="quiz-question-card" class="bg-slate-50 border border-slate-200 rounded-xl p-5 text-slate-800 text-sm space-y-3">
+                            <!-- Question rendered by JS -->
+                        </div>
+
+                        <!-- Student Input Form -->
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+                            <h3 class="font-bold text-slate-900 text-sm">Your Solution Answers:</h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Optimal $x$ Value:</label>
+                                    <input type="number" id="quiz-input-x" placeholder="e.g. 20" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Optimal $y$ Value:</label>
+                                    <input type="number" id="quiz-input-y" placeholder="e.g. 15" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Optimal Value of $Z$:</label>
+                                <input type="number" id="quiz-input-z" placeholder="e.g. 1250" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm">
+                            </div>
+
+                            <button onclick="submitQuizAnswer()" class="w-full py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-sm transition">
+                                Submit Answer & Check
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Solution & Explanation Panel -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div id="quiz-feedback-box" class="hidden bg-white border border-slate-200 rounded-xl p-5 text-sm space-y-4">
+                            <!-- Populated dynamically after submission -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CURRICULUM CONCEPTS & VIDEO REFERENCES -->
+        <section id="sec-concepts" class="space-y-6 hidden">
+            <!-- HKDSE Key Concepts Summary -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">S6 Mathematics Curriculum</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Linear Programming Essential Notes</h2>
+                    <p class="text-slate-600 text-sm mt-1">Core rules and marking scheme concepts for HKDSE Compulsory Mathematics.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl space-y-2">
+                        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-bold text-sm">1</div>
+                        <h3 class="font-bold text-slate-900">1. Feasible Region (可行區域)</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            The common shaded region satisfying all system constraints simultaneously. Includes non-negativity $x \ge 0, y \ge 0$. Must use solid lines for $\le, \ge$ and dashed lines for $<, >$.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl space-y-2">
+                        <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center font-bold text-sm">2</div>
+                        <h3 class="font-bold text-slate-900">2. Fundamental Theorem</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            If a feasible region is **bounded** (a closed polygon), the maximum and minimum values of $Z = ax + by$ **MUST occur at one of the vertices (corner points)**.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl space-y-2">
+                        <div class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center font-bold text-sm">3</div>
+                        <h3 class="font-bold text-slate-900">3. Search Line Method (平行線法)</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Move the line $ax + by = Z$ parallel across the region. The last point touched before leaving the feasible region gives the Maximum (or Minimum depending on slope).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Video References Embed / Cards -->
+                <div class="mt-8 pt-6 border-t border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i class="fa-brands fa-youtube text-red-600"></i> Video Reference Tutorials
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Video Card 1 -->
+                        <div class="bg-slate-900 text-white rounded-xl overflow-hidden shadow-md flex flex-col justify-between">
+                            <div class="p-5 space-y-3">
+                                <div class="flex items-center justify-between text-xs text-slate-400">
+                                    <span>Don't Memorise Channel</span>
+                                    <span class="bg-red-600 text-white px-2 py-0.5 rounded font-bold">Part 1</span>
+                                </div>
+                                <h4 class="font-bold text-base leading-snug">Linear Programming - Formulating Word Problems</h4>
+                                <p class="text-xs text-slate-300">Explains how to define decision variables and construct inequality constraints step-by-step from practical real-world problems.</p>
+                            </div>
+                            <div class="p-5 bg-slate-800 border-t border-slate-700 flex justify-between items-center">
+                                <a href="https://www.youtube.com/watch?v=uJFiR0DG2Bw" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs font-bold text-blue-400 hover:text-blue-300">
+                                    <span>Watch Video on YouTube</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                                <span class="text-[10px] text-slate-400 font-mono">uJFiR0DG2Bw</span>
+                            </div>
+                        </div>
+
+                        <!-- Video Card 2 -->
+                        <div class="bg-slate-900 text-white rounded-xl overflow-hidden shadow-md flex flex-col justify-between">
+                            <div class="p-5 space-y-3">
+                                <div class="flex items-center justify-between text-xs text-slate-400">
+                                    <span>Don't Memorise Channel</span>
+                                    <span class="bg-red-600 text-white px-2 py-0.5 rounded font-bold">Part 2</span>
+                                </div>
+                                <h4 class="font-bold text-base leading-snug">Linear Programming - Graphical Solution Method</h4>
+                                <p class="text-xs text-slate-300">Demonstrates plotting boundary lines, shading feasible regions, identifying corner vertices, and evaluating $Z$.</p>
+                            </div>
+                            <div class="p-5 bg-slate-800 border-t border-slate-700 flex justify-between items-center">
+                                <a href="https://www.youtube.com/watch?v=qQFAvPF2OSI" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs font-bold text-blue-400 hover:text-blue-300">
+                                    <span>Watch Video on YouTube</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                                <span class="text-[10px] text-slate-400 font-mono">qQFAvPF2OSI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            HKDSE Mathematics (Compulsory Part) - Linear Programming Interactive Teaching Resource &bull; Designed for HK S6 Students
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Global Application State
+        const state = {
+            activeTab: 'formulation',
+            // Active Constraints for Graphical Solver
+            constraints: [
+                { id: 1, a: 2, b: 1, type: '<=', c: 40, color: '#ef4444' }, // Red
+                { id: 2, a: 1, b: 2, type: '<=', c: 50, color: '#3b82f6' }, // Blue
+            ],
+            // Objective Function
+            obj: {
+                type: 'max', // 'max' or 'min'
+                p: 40,
+                q: 30,
+                zVal: 0
+            },
+            // Feasible Region Vertices calculated
+            vertices: [],
+            // Quiz State
+            currentQuiz: null
+        };
+
+        // Preset Formulations Scenarios Data
+        const formulationScenarios = {
+            bakery: {
+                title: "Traditional Hong Kong Bakery Scenario",
+                description: "A local bakery in Mong Kok bakes <b>Pineapple Buns ($x$)</b> and <b>Egg Tarts ($y$)</b> daily. Each bun requires 2 units of flour and 1 unit of butter. Each tart requires 1 unit of flour and 2 units of butter. The bakery has at most 40 units of flour and 50 units of butter available per day. Profit per bun is $40, and profit per egg tart is $30.",
+                varX: "Quantity of Pineapple Buns baked daily",
+                varY: "Quantity of Egg Tarts baked daily",
+                objP: 40,
+                objQ: 30,
+                objType: "Maximize",
+                constraints: [
+                    { label: "Flour Constraint", a: 2, b: 1, type: "<=", c: 40 },
+                    { label: "Butter Constraint", a: 1, b: 2, type: "<=", c: 50 }
+                ]
+            },
+            factory: {
+                title: "Kowloon Toy Factory Production Line",
+                description: "A factory produces <b>Toy Robots ($x$)</b> and <b>Toy Cars ($y$)</b>. Machine A operates for up to 60 hours, requiring 3 hours per robot and 1 hour per car. Machine B operates for up to 80 hours, requiring 1 hour per robot and 2 hours per car. Profit per robot is $100 and per car is $60.",
+                varX: "Number of Toy Robots produced",
+                varY: "Number of Toy Cars produced",
+                objP: 100,
+                objQ: 60,
+                objType: "Maximize",
+                constraints: [
+                    { label: "Machine A Time", a: 3, b: 1, type: "<=", c: 60 },
+                    { label: "Machine B Time", a: 1, b: 2, type: "<=", c: 80 }
+                ]
+            },
+            diet: {
+                title: "Health & Nutrition Supplement Plan",
+                description: "A student creates a daily diet using <b>Pills A ($x$)</b> and <b>Pills B ($y$)</b>. Pill A contains 4 units of Vitamin C and 2 units of Calcium. Pill B contains 2 units of Vitamin C and 4 units of Calcium. The minimum daily requirement is 20 units of Vitamin C and 16 units of Calcium. Cost per Pill A is $5 and Pill B is $4.",
+                varX: "Pills A consumed daily",
+                varY: "Pills B consumed daily",
+                objP: 5,
+                objQ: 4,
+                objType: "Minimize",
+                constraints: [
+                    { label: "Vitamin C Requirement", a: 4, b: 2, type: ">=", c: 20 },
+                    { label: "Calcium Requirement", a: 2, b: 4, type: ">=", c: 16 }
+                ]
+            }
+        };
+
+        // HKDSE Quiz Templates
+        const quizBank = [
+            {
+                text: "A factory makes tables (x) and chairs (y). Each table requires 4 hours of assembly and 2 hours of finishing. Each chair requires 1 hour of assembly and 2 hours of finishing. Assembly department has max 40 hours available. Finishing department has max 24 hours available. Profit is $150 per table and $50 per chair. Find the maximum profit Z.",
+                c1: { a: 4, b: 1, type: '<=', c: 40 },
+                c2: { a: 2, b: 2, type: '<=', c: 24 },
+                obj: { type: 'max', p: 150, q: 50 },
+                correctX: 8,
+                correctY: 8,
+                correctZ: 1600,
+                explanation: "Vertices are (0,0), (10,0), (8,8), and (0,12). Evaluating Z = 150x + 50y gives Max Z = 1600 at (8, 8)."
+            },
+            {
+                text: "A farmer mixes two types of feed: Type A (x) and Type B (y). Type A provides 3 units of protein and 1 unit of fat per bag. Type B provides 1 unit of protein and 2 units of fat per bag. Minimum requirement is 30 units of protein and 20 units of fat. Cost is $20 per bag for Type A and $15 per bag for Type B. Find the minimum cost Z.",
+                c1: { a: 3, b: 1, type: '>=', c: 30 },
+                c2: { a: 1, b: 2, type: '>=', c: 20 },
+                obj: { type: 'min', p: 20, q: 15 },
+                correctX: 8,
+                correctY: 6,
+                correctZ: 250,
+                explanation: "Vertices of unbounded feasible region in 1st quadrant are (0,30), (8,6), and (20,0). Evaluating Z = 20(8) + 15(6) = $250."
+            }
+        ];
+
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            document.querySelectorAll('#main-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+
+            ['formulation', 'playground', 'practice', 'concepts'].forEach(id => {
+                document.getElementById(`sec-${id}`).classList.add('hidden');
+            });
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            if (tabId === 'playground') {
+                setTimeout(() => { updateGraph(); }, 50);
+            }
+        }
+
+        function loadFormulationScenario(key) {
+            const data = formulationScenarios[key];
+            const box = document.getElementById('formulation-scenario-box');
+            box.innerHTML = `
+                <h3 class="font-bold text-lg text-amber-900 mb-2"><i class="fa-solid fa-scroll mr-2"></i> ${data.title}</h3>
+                <p class="text-sm leading-relaxed">${data.description}</p>
+            `;
+
+            // Render Step A
+            document.getElementById('step-a-container').innerHTML = `
+                <div class="bg-white p-3 rounded-lg border border-slate-200 text-xs space-y-2">
+                    <div><span class="font-bold text-slate-700">Variable x:</span> ${data.varX}</div>
+                    <div><span class="font-bold text-slate-700">Variable y:</span> ${data.varY}</div>
+                </div>
+            `;
+            document.getElementById('step-a-feedback').className = "text-xs font-semibold text-emerald-600";
+            document.getElementById('step-a-feedback').innerHTML = "<i class='fa-solid fa-check-circle mr-1'></i> Variables correctly defined!";
+
+            // Render Step B
+            document.getElementById('step-b-container').innerHTML = `
+                <div class="bg-white p-3 rounded-lg border border-slate-200 text-xs space-y-2">
+                    <label class="block font-semibold text-slate-700">Objective Goal:</label>
+                    <div class="font-mono text-sm font-bold text-blue-700 bg-blue-50 p-2 rounded text-center border border-blue-200">
+                        ${data.objType} Z = ${data.objP}x + ${data.objQ}y
+                    </div>
+                </div>
+            `;
+            document.getElementById('step-b-feedback').className = "text-xs font-semibold text-emerald-600";
+            document.getElementById('step-b-feedback').innerHTML = "<i class='fa-solid fa-check-circle mr-1'></i> Objective function formulated!";
+
+            // Render Step C
+            let cHtml = data.constraints.map((c, idx) => `
+                <div class="bg-white p-2.5 rounded-lg border border-slate-200 text-xs space-y-1">
+                    <div class="font-semibold text-slate-700">${c.label}:</div>
+                    <div class="font-mono font-bold text-slate-900">${c.a}x + ${c.b}y ${c.type} ${c.c}</div>
+                </div>
+            `).join('');
+            cHtml += `<div class="font-mono text-xs font-semibold text-slate-600 bg-slate-100 p-2 rounded text-center">x ≥ 0, y ≥ 0</div>`;
+            document.getElementById('step-c-container').innerHTML = cHtml;
+            document.getElementById('step-c-feedback').className = "text-xs font-semibold text-emerald-600";
+            document.getElementById('step-c-feedback').innerHTML = "<i class='fa-solid fa-check-circle mr-1'></i> Inequalities structured!";
+        }
+
+        function checkFormulationAll() {
+            alert("Great job! All variables, objective functions, and inequality constraints match the HKDSE standard formulation structure.");
+        }
+
+        function sendToPlayground() {
+            const currentKey = document.getElementById('scenario-select').value;
+            const data = formulationScenarios[currentKey];
+
+            // Update state
+            state.constraints = data.constraints.map((c, idx) => ({
+                id: idx + 1,
+                a: c.a,
+                b: c.b,
+                type: c.type,
+                c: c.c,
+                color: idx === 0 ? '#ef4444' : '#3b82f6'
+            }));
+
+            state.obj.p = data.objP;
+            state.obj.q = data.objQ;
+            state.obj.type = data.objType === "Maximize" ? "max" : "min";
+
+            document.getElementById('obj-p').value = data.objP;
+            document.getElementById('obj-q').value = data.objQ;
+            document.getElementById('obj-type').value = state.obj.type;
+
+            renderConstraintsUI();
+            switchTab('playground');
+        }
+
+        function renderConstraintsUI() {
+            const list = document.getElementById('constraints-list');
+            list.innerHTML = '';
+
+            state.constraints.forEach((c, idx) => {
+                const item = document.createElement('div');
+                item.className = 'bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs space-y-2';
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold flex items-center gap-1.5" style="color: ${c.color}">
+                            <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: ${c.color}"></span> Line ${idx + 1}
+                        </span>
+                        ${state.constraints.length > 1 ? `<button onclick="removeConstraint(${c.id})" class="text-red-500 hover:text-red-700 font-bold"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    </div>
+                    <div class="flex items-center space-x-1 font-mono">
+                        <input type="number" value="${c.a}" oninput="updateConstraintVal(${c.id}, 'a', this.value)" class="w-12 p-1 border rounded text-center">
+                        <span>x +</span>
+                        <input type="number" value="${c.b}" oninput="updateConstraintVal(${c.id}, 'b', this.value)" class="w-12 p-1 border rounded text-center">
+                        <span>y</span>
+                        <select onchange="updateConstraintVal(${c.id}, 'type', this.value)" class="p-1 border rounded bg-white">
+                            <option value="<=" ${c.type === '<=' ? 'selected' : ''}>≤</option>
+                            <option value=">=" ${c.type === '>=' ? 'selected' : ''}>≥</option>
+                        </select>
+                        <input type="number" value="${c.c}" oninput="updateConstraintVal(${c.id}, 'c', this.value)" class="w-16 p-1 border rounded text-center">
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function addConstraint() {
+            const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+            const newId = Date.now();
+            const color = colors[state.constraints.length % colors.length];
+            state.constraints.push({ id: newId, a: 1, b: 1, type: '<=', c: 30, color: color });
+            renderConstraintsUI();
+            updateGraph();
+        }
+
+        function removeConstraint(id) {
+            state.constraints = state.constraints.filter(c => c.id !== id);
+            renderConstraintsUI();
+            updateGraph();
+        }
+
+        function updateConstraintVal(id, field, val) {
+            const c = state.constraints.find(item => item.id === id);
+            if (c) {
+                if (field === 'type') c[field] = val;
+                else c[field] = parseFloat(val) || 0;
+                updateGraph();
+            }
+        }
+
+        function computeFeasibleVertices() {
+            // Lines equations: a*x + b*y = c
+            // Plus boundaries x = 0, y = 0
+            const lines = state.constraints.map(c => ({ a: c.a, b: c.b, c: c.c }));
+            // Non negativity lines: x=0 => 1*x + 0*y = 0; y=0 => 0*x + 1*y = 0
+            lines.push({ a: 1, b: 0, c: 0 });
+            lines.push({ a: 0, b: 1, c: 0 });
+
+            const intersections = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                for (let j = i + 1; j < lines.length; j++) {
+                    const l1 = lines[i];
+                    const l2 = lines[j];
+                    const det = l1.a * l2.b - l2.a * l1.b;
+
+                    if (Math.abs(det) > 1e-6) {
+                        const x = (l1.c * l2.b - l2.c * l1.b) / det;
+                        const y = (l1.a * l2.c - l2.a * l1.c) / det;
+
+                        if (x >= -1e-4 && y >= -1e-4) {
+                            intersections.push({ x: Math.max(0, x), y: Math.max(0, y) });
+                        }
+                    }
+                }
+            }
+
+            // Filter points satisfying all constraints
+            const feasible = intersections.filter(p => {
+                return state.constraints.every(c => {
+                    const val = c.a * p.x + c.b * p.y;
+                    if (c.type === '<=') return val <= c.c + 1e-3;
+                    if (c.type === '>=') return val >= c.c - 1e-3;
+                    return true;
+                });
+            });
+
+            // Remove duplicate points
+            const unique = [];
+            feasible.forEach(p => {
+                if (!unique.some(u => Math.hypot(u.x - p.x, u.y - p.y) < 1e-2)) {
+                    unique.push(p);
+                }
+            });
+
+            // Sort points in counter-clockwise order around centroid to form polygon
+            if (unique.length > 0) {
+                const cx = unique.reduce((sum, p) => sum + p.x, 0) / unique.length;
+                const cy = unique.reduce((sum, p) => sum + p.y, 0) / unique.length;
+                unique.sort((p1, p2) => Math.atan2(p1.y - cy, p1.x - cx) - Math.atan2(p2.y - cy, p2.x - cx));
+            }
+
+            return unique;
+        }
+
+        function updateGraph() {
+            // Read objective params
+            state.obj.p = parseFloat(document.getElementById('obj-p').value) || 0;
+            state.obj.q = parseFloat(document.getElementById('obj-q').value) || 0;
+            state.obj.type = document.getElementById('obj-type').value;
+
+            const canvas = document.getElementById('lpCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Calculate Vertices
+            const vertices = computeFeasibleVertices();
+            state.vertices = vertices;
+
+            // Determine Axis Scale dynamically
+            let maxX = 50, maxY = 50;
+            state.constraints.forEach(c => {
+                if (c.a > 0) maxX = Math.max(maxX, (c.c / c.a) * 1.25);
+                if (c.b > 0) maxY = Math.max(maxY, (c.c / c.b) * 1.25);
+            });
+            vertices.forEach(v => {
+                maxX = Math.max(maxX, v.x * 1.3);
+                maxY = Math.max(maxY, v.y * 1.3);
+            });
+
+            const margin = 50;
+            const graphW = width - margin * 2;
+            const graphH = height - margin * 2;
+
+            function toCanvasX(x) { return margin + (x / maxX) * graphW; }
+            function toCanvasY(y) { return height - margin - (y / maxY) * graphH; }
+            function toCoordX(cx) { return ((cx - margin) / graphW) * maxX; }
+            function toCoordY(cy) { return ((height - margin - cy) / graphH) * maxY; }
+
+            // Draw Grid Lines
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            const gridCount = 10;
+            for (let i = 0; i <= gridCount; i++) {
+                let gx = margin + (i / gridCount) * graphW;
+                let gy = height - margin - (i / gridCount) * graphH;
+
+                ctx.beginPath();
+                ctx.moveTo(gx, margin);
+                ctx.lineTo(gx, height - margin);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(margin, gy);
+                ctx.lineTo(width - margin, gy);
+                ctx.stroke();
+            }
+
+            // Draw Feasible Region Polygon
+            if (vertices.length >= 3) {
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(vertices[0].x), toCanvasY(vertices[0].y));
+                for (let i = 1; i < vertices.length; i++) {
+                    ctx.lineTo(toCanvasX(vertices[i].x), toCanvasY(vertices[i].y));
+                }
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.25)'; // Semi-transparent emerald
+                ctx.fill();
+                ctx.strokeStyle = '#059669';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // Draw Constraint Boundary Lines
+            state.constraints.forEach((c, idx) => {
+                ctx.strokeStyle = c.color;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+
+                if (c.b !== 0) {
+                    let x1 = 0, y1 = c.c / c.b;
+                    let x2 = maxX, y2 = (c.c - c.a * maxX) / c.b;
+                    ctx.moveTo(toCanvasX(x1), toCanvasY(y1));
+                    ctx.lineTo(toCanvasX(x2), toCanvasY(y2));
+                } else if (c.a !== 0) {
+                    let xVal = c.c / c.a;
+                    ctx.moveTo(toCanvasX(xVal), toCanvasY(0));
+                    ctx.lineTo(toCanvasX(xVal), toCanvasY(maxY));
+                }
+                ctx.stroke();
+            });
+
+            // Draw Axes
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            // X axis
+            ctx.moveTo(margin, height - margin);
+            ctx.lineTo(width - margin + 15, height - margin);
+            // Y axis
+            ctx.moveTo(margin, height - margin);
+            ctx.lineTo(margin, margin - 15);
+            ctx.stroke();
+
+            // Axis Labels & Ticks
+            ctx.fillStyle = '#475569';
+            ctx.font = '12px Inter, sans-serif';
+            ctx.fillText('O (0,0)', margin - 25, height - margin + 20);
+            ctx.fillText('x', width - margin + 20, height - margin + 5);
+            ctx.fillText('y', margin - 5, margin - 20);
+
+            // Draw Vertices Points & Labels
+            const labels = ['A', 'B', 'C', 'D', 'E', 'F'];
+            vertices.forEach((v, idx) => {
+                const label = labels[idx % labels.length];
+                v.label = label;
+                const vx = toCanvasX(v.x);
+                const vy = toCanvasY(v.y);
+
+                ctx.fillStyle = '#1e1b4b';
+                ctx.beginPath();
+                ctx.arc(vx, vy, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.font = 'bold 13px Inter, sans-serif';
+                ctx.fillStyle = '#1e293b';
+                ctx.fillText(`${label}(${v.x.toFixed(1)}, ${v.y.toFixed(1)})`, vx + 8, vy - 8);
+            });
+
+            // Iso-Profit / Iso-Cost Sweeper Line
+            const zSliderVal = parseFloat(document.getElementById('iso-z-slider').value);
+            state.obj.zVal = zSliderVal;
+            document.getElementById('obj-z-display').innerText = `Z = ${zSliderVal}`;
+
+            if (state.obj.p !== 0 || state.obj.q !== 0) {
+                ctx.strokeStyle = '#8b5cf6'; // Purple Iso Line
+                ctx.lineWidth = 2;
+                ctx.setLineDash([6, 6]);
+                ctx.beginPath();
+
+                if (state.obj.q !== 0) {
+                    let y1 = zSliderVal / state.obj.q;
+                    let y2 = (zSliderVal - state.obj.p * maxX) / state.obj.q;
+                    ctx.moveTo(toCanvasX(0), toCanvasY(y1));
+                    ctx.lineTo(toCanvasX(maxX), toCanvasY(y2));
+                } else {
+                    let xVal = zSliderVal / state.obj.p;
+                    ctx.moveTo(toCanvasX(xVal), toCanvasY(0));
+                    ctx.lineTo(toCanvasX(xVal), toCanvasY(maxY));
+                }
+                ctx.stroke();
+                ctx.setLineDash([]); // Reset line dash
+            }
+
+            // Update Vertex Evaluation Table
+            updateVertexTable();
+        }
+
+        function updateVertexTable() {
+            const tbody = document.getElementById('vertex-table-body');
+            tbody.innerHTML = '';
+
+            if (state.vertices.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">No Feasible Region (Infeasible System)</td></tr>`;
+                document.getElementById('optimal-solution-banner').className = "hidden";
+                return;
+            }
+
+            let bestZ = state.obj.type === 'max' ? -Infinity : Infinity;
+            let bestVertex = null;
+
+            const evaluated = state.vertices.map(v => {
+                const z = state.obj.p * v.x + state.obj.q * v.y;
+                if (state.obj.type === 'max') {
+                    if (z > bestZ) { bestZ = z; bestVertex = v; }
+                } else {
+                    if (z < bestZ) { bestZ = z; bestVertex = v; }
+                }
+                return { ...v, z };
+            });
+
+            // Update Iso slider range dynamically based on max Z found
+            if (bestZ !== -Infinity && bestZ !== Infinity) {
+                const slider = document.getElementById('iso-z-slider');
+                slider.max = Math.ceil(bestZ * 1.5) || 100;
+            }
+
+            evaluated.forEach(v => {
+                const isOptimal = (v.z === bestZ);
+                const tr = document.createElement('tr');
+                tr.className = isOptimal ? 'bg-emerald-50 font-bold' : 'hover:bg-slate-50';
+                tr.innerHTML = `
+                    <td class="p-2.5 border-b border-slate-200">${v.label}</td>
+                    <td class="p-2.5 border-b border-slate-200">(${v.x.toFixed(2)}, ${v.y.toFixed(2)})</td>
+                    <td class="p-2.5 border-b border-slate-200">${state.obj.p}(${v.x.toFixed(1)}) + ${state.obj.q}(${v.y.toFixed(1)}) = <b>${v.z.toFixed(2)}</b></td>
+                    <td class="p-2.5 border-b border-slate-200">
+                        ${isOptimal ? `<span class="px-2 py-0.5 rounded text-[10px] bg-emerald-600 text-white uppercase tracking-wider">${state.obj.type.toUpperCase()} OPTIMAL</span>` : '<span class="text-slate-400">Feasible</span>'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Banner summary
+            const banner = document.getElementById('optimal-solution-banner');
+            banner.className = "mt-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center justify-between";
+            banner.innerHTML = `
+                <div>
+                    <i class="fa-solid fa-trophy text-amber-500 mr-2 text-base"></i>
+                    Optimal Solution: <b>${state.obj.type.toUpperCase()} Z = ${bestZ.toFixed(2)}</b> at Vertex ${bestVertex.label} (${bestVertex.x.toFixed(2)}, ${bestVertex.y.toFixed(2)})
+                </div>
+                <button onclick="setIsoToOptimal(${bestZ})" class="px-2.5 py-1 bg-emerald-700 text-white rounded text-[11px] font-bold hover:bg-emerald-800">
+                    Set Iso Line Z = ${bestZ.toFixed(0)}
+                </button>
+            `;
+        }
+
+        function onIsoSliderChange(val) {
+            state.obj.zVal = parseFloat(val);
+            updateGraph();
+        }
+
+        function setIsoToOptimal(zVal) {
+            document.getElementById('iso-z-slider').value = zVal;
+            onIsoSliderChange(zVal);
+        }
+
+        function testCustomPoint() {
+            const x = parseFloat(document.getElementById('test-x').value) || 0;
+            const y = parseFloat(document.getElementById('test-y').value) || 0;
+            const resBox = document.getElementById('point-test-result');
+
+            if (x < 0 || y < 0) {
+                resBox.className = "text-xs p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-800 font-mono";
+                resBox.innerHTML = `Point (${x}, ${y}) violates Non-negativity constraint (x ≥ 0, y ≥ 0).`;
+                return;
+            }
+
+            let isFeasible = true;
+            let failedLine = "";
+
+            state.constraints.forEach((c, idx) => {
+                const lhs = c.a * x + c.b * y;
+                if (c.type === '<=' && lhs > c.c) {
+                    isFeasible = false;
+                    failedLine = `Line ${idx + 1} (${c.a}x + ${c.b}y ≤ ${c.c})`;
+                }
+                if (c.type === '>=' && lhs < c.c) {
+                    isFeasible = false;
+                    failedLine = `Line ${idx + 1} (${c.a}x + ${c.b}y ≥ ${c.c})`;
+                }
+            });
+
+            const z = state.obj.p * x + state.obj.q * y;
+
+            if (isFeasible) {
+                resBox.className = "text-xs p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono";
+                resBox.innerHTML = `✓ Point (${x}, ${y}) is FEASIBLE! Calculated Z = ${z.toFixed(2)}.`;
+            } else {
+                resBox.className = "text-xs p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-800 font-mono";
+                resBox.innerHTML = `✗ Point (${x}, ${y}) is INFEASIBLE. Violates ${failedLine}.`;
+            }
+        }
+
+        function generateNewQuiz() {
+            const quiz = quizBank[Math.floor(Math.random() * quizBank.length)];
+            state.currentQuiz = quiz;
+
+            document.getElementById('quiz-question-card').innerHTML = `
+                <div class="font-bold text-slate-900 mb-2">HKDSE Question Scenario:</div>
+                <p class="leading-relaxed text-slate-700">${quiz.text}</p>
+            `;
+
+            document.getElementById('quiz-input-x').value = '';
+            document.getElementById('quiz-input-y').value = '';
+            document.getElementById('quiz-input-z').value = '';
+            document.getElementById('quiz-feedback-box').classList.add('hidden');
+        }
+
+        function submitQuizAnswer() {
+            const userX = parseFloat(document.getElementById('quiz-input-x').value);
+            const userY = parseFloat(document.getElementById('quiz-input-y').value);
+            const userZ = parseFloat(document.getElementById('quiz-input-z').value);
+
+            const q = state.currentQuiz;
+            const fbBox = document.getElementById('quiz-feedback-box');
+            fbBox.classList.remove('hidden');
+
+            const isXCorrect = Math.abs(userX - q.correctX) < 1e-2;
+            const isYCorrect = Math.abs(userY - q.correctY) < 1e-2;
+            const isZCorrect = Math.abs(userZ - q.correctZ) < 1e-2;
+
+            if (isXCorrect && isYCorrect && isZCorrect) {
+                fbBox.className = "bg-emerald-50 border border-emerald-200 rounded-xl p-5 text-sm space-y-3 text-emerald-900";
+                fbBox.innerHTML = `
+                    <div class="font-bold text-emerald-800 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i> Correct! Excellent Work!
+                    </div>
+                    <p class="text-xs text-emerald-700">${q.explanation}</p>
+                `;
+            } else {
+                fbBox.className = "bg-red-50 border border-red-200 rounded-xl p-5 text-sm space-y-3 text-red-900";
+                fbBox.innerHTML = `
+                    <div class="font-bold text-red-800 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-circle-xmark text-red-600"></i> Incorrect. Review Model Solution:
+                    </div>
+                    <div class="text-xs space-y-1 font-mono text-red-800">
+                        <div>Optimal (x, y) = (${q.correctX}, ${q.correctY})</div>
+                        <div>Optimal Z = ${q.correctZ}</div>
+                    </div>
+                    <p class="text-xs text-slate-600 border-t border-red-200 pt-2">${q.explanation}</p>
+                `;
+            }
+        }
+
+        window.onload = function () {
+            // Load default formulation scenario
+            loadFormulationScenario('bakery');
+
+            // Render constraint inputs and initial graph
+            renderConstraintsUI();
+            updateGraph();
+
+            // Load initial quiz
+            generateNewQuiz();
+
+            // Canvas Click Listener for Point Inspector
+            const canvas = document.getElementById('lpCanvas');
+            canvas.addEventListener('click', function (e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                const clickX = (e.clientX - rect.left) * scaleX;
+                const clickY = (e.clientY - rect.top) * scaleY;
+
+                let maxX = 50, maxY = 50;
+                state.constraints.forEach(c => {
+                    if (c.a > 0) maxX = Math.max(maxX, (c.c / c.a) * 1.25);
+                    if (c.b > 0) maxY = Math.max(maxY, (c.c / c.b) * 1.25);
+                });
+
+                const margin = 50;
+                const graphW = canvas.width - margin * 2;
+                const graphH = canvas.height - margin * 2;
+
+                const coordX = Math.max(0, Math.round(((clickX - margin) / graphW) * maxX));
+                const coordY = Math.max(0, Math.round(((canvas.height - margin - clickY) / graphH) * maxY));
+
+                document.getElementById('test-x').value = coordX;
+                document.getElementById('test-y').value = coordY;
+                testCustomPoint();
+            });
+        };
+    </script>
+</body>
+</html>
