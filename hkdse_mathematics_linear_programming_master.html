@@ -531,14 +531,14 @@
         // HKDSE Quiz Templates
         const quizBank = [
             {
-                text: "A factory makes tables (x) and chairs (y). Each table requires 4 hours of assembly and 2 hours of finishing. Each chair requires 1 hour of assembly and 2 hours of finishing. Assembly department has max 40 hours available. Finishing department has max 24 hours available. Profit is $150 per table and $50 per chair. Find the maximum profit Z.",
-                c1: { a: 4, b: 1, type: '<=', c: 40 },
-                c2: { a: 2, b: 2, type: '<=', c: 24 },
-                obj: { type: 'max', p: 150, q: 50 },
-                correctX: 8,
-                correctY: 8,
-                correctZ: 1600,
-                explanation: "Vertices are (0,0), (10,0), (8,8), and (0,12). Evaluating Z = 150x + 50y gives Max Z = 1600 at (8, 8)."
+                text: "A factory makes tables (x) and chairs (y). Each table requires 2 hours of assembly and 1 hour of finishing. Each chair requires 1 hour of assembly and 2 hours of finishing. Assembly department has max 50 hours available. Finishing department has max 40 hours available. Profit is $150 per table and $50 per chair. Find the maximum profit Z.",
+                c1: { a: 2, b: 1, type: '<=', c: 50 },
+                c2: { a: 1, b: 2, type: '<=', c: 40 },
+                obj: { type: 'max', p: 3, q: 2 },
+                correctX: 20,
+                correctY: 10,
+                correctZ: 80,
+                explanation: "Vertices are (0,0), (25,0), (20,10), and (0,20). Evaluating Z = 3x + 2y gives Max Z = 80 at (20, 10)."
             },
             {
                 text: "A farmer mixes two types of feed: Type A (x) and Type B (y). Type A provides 3 units of protein and 1 unit of fat per bag. Type B provides 1 unit of protein and 2 units of fat per bag. Minimum requirement is 30 units of protein and 20 units of fat. Cost is $20 per bag for Type A and $15 per bag for Type B. Find the minimum cost Z.",
